@@ -137,7 +137,7 @@ function Edit( { attributes, setAttributes, context } ) {
 									className="wp-block-navigation-item__content"
 									lang={ item.tag }
 									aria-current={
-										item.current ? 'page' : undefined
+										item.current ? 'true' : undefined
 									}
 								>
 									{ text( item, display ) }

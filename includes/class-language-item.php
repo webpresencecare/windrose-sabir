@@ -9,8 +9,8 @@
  *   metadata filter; editor: the `blocks.registerBlockType` filter in src/language-item).
  * - Text: the language's name in its own language (default; with the region when two sites share a language), its
  *   code (FR, with the name for screen readers), or the label set in MSLS's settings.
- * - Each link has `lang` and `hreflang` (the language's BCP 47 tag, short when it is unique, as MSLS's hreflang), and
- *   the current language `aria-current="page"`. Language names carry `translate="no"`.
+ * - Each link has `lang` and `hreflang` (the language's BCP 47 tag, short when it is unique, as MSLS's hreflang). The
+ *   current language is plain text, not a link (`lang`, `aria-current="true"`). Language names carry `translate="no"`.
  * - Options: show the current language (default yes); hide languages with no translation of this page (default no:
  *   they link to that site's home page; MSLS itself gives no address there).
  *
@@ -135,8 +135,9 @@ final class Language_Item {
 				if ( ! $current && true === ( $attrs['hideMissing'] ?? false ) && ! $plain && ! $options->has_value( $locale ) ) {
 					continue;
 				}
-				$url = (string) $blog->get_url( $options );
-				if ( '' === $url ) {
+				// The current language is plain text: no address needed.
+				$url = $current ? '' : (string) $blog->get_url( $options );
+				if ( '' === $url && ! $current ) {
 					// MSLS gives no address for a page without translation there: its home page, unless hidden.
 					if ( true === ( $attrs['hideMissing'] ?? false ) ) {
 						continue;
@@ -217,14 +218,11 @@ final class Language_Item {
 				'label' => esc_html( '' !== $item['label'] ? $item['label'] : $item['name'] ),
 				default => sprintf( '<span translate="no">%s</span>', esc_html( $item['name'] ) ),
 			};
-			$link  = sprintf(
-				'<a class="%1$s" href="%2$s" hreflang="%3$s" lang="%3$s"%4$s>%5$s</a>',
-				$in_nav ? 'wp-block-navigation-item__content' : 'windrose-language-item__link',
-				esc_url( $item['url'] ),
-				esc_attr( $item['tag'] ),
-				$item['current'] ? ' aria-current="page"' : '',
-				$in_nav ? '<span class="wp-block-navigation-item__label">' . $text . '</span>' : $text
-			);
+			$text  = $in_nav ? '<span class="wp-block-navigation-item__label">' . $text . '</span>' : $text;
+			$tag   = esc_attr( $item['tag'] );
+			$link  = $item['current']
+				? sprintf( '<span class="%1$s" lang="%2$s" aria-current="true">%3$s</span>', $in_nav ? 'wp-block-navigation-item__content' : 'windrose-language-item__current', $tag, $text )
+				: sprintf( '<a class="%1$s" href="%2$s" hreflang="%3$s" lang="%3$s">%4$s</a>', $in_nav ? 'wp-block-navigation-item__content' : 'windrose-language-item__link', esc_url( $item['url'] ), $tag, $text );
 			$class = ( $in_nav ? 'wp-block-navigation-item ' : '' ) . 'windrose-language-item__item' . ( $item['current'] ? ' is-current' : '' );
 			$html .= sprintf( '<li class="%1$s">%2$s</li>', esc_attr( $class . ( $in_nav ? $extra : '' ) ), $link );
 		}

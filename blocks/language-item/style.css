@@ -20,7 +20,3 @@ ul.windrose-language-item {
 	margin-right: 0;
 	padding: 0;
 }
-
-.windrose-language-item__item a[aria-current="page"] {
-	text-decoration: none;
-}

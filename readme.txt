@@ -5,7 +5,7 @@ Requires at least: 7.2
 Tested up to: 7.2
 Requires PHP: 8.4
 Requires Plugins: multisite-language-switcher
-Stable tag: 0.3.3
+Stable tag: 0.3.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ Each site's settings page of Multisite Language Switcher says which group the si
 
 **Copy**: in the block editor, the Languages panel copies a post to the other sites of its group as drafts, linked as translations, so an editor there translates and publishes it. Title, blocks, excerpt, captions and credits, the featured image, categories and tags (their translations, or new terms to translate) and the page template come along. Images: with Windrose Anchors, you choose network items of the target site's media hub (images not shared yet are shared first when you may; with Anchors 0.5.0 also images of drafts not published yet) or copies of the files; without Anchors the files are copied into the other site's media library. Rights are checked on the other site, and the copied content follows that site's rules. Also a bulk action in the post lists.
 
-**Language item**: a block for the Navigation block (or anywhere) linking to the current page in the group's other languages, with each language's name in its own language (or its code), and the lang, hreflang and aria-current attributes. A network setting shows Multisite Language Switcher's own switcher with names or codes instead of flags.
+**Language item**: a block for the Navigation block (or anywhere) linking to the current page in the group's other languages, with each language's name in its own language (or its code), and the lang and hreflang attributes; the current language is plain text, not a link. A network setting shows Multisite Language Switcher's own switcher with names or codes instead of flags.
 
 **Translation links**: Network Admin, Windrose Sabir, Translation links lists the links that no longer fit their group (after a site changed group, or a post was deleted), and removes them after a confirmation. Site Health warns about them on each site.
 
@@ -47,6 +47,9 @@ Windrose Sabir collects nothing about visitors, sets no cookies and contacts no 
 Uninstalling removes the language groups, the module and display settings, each site's Windrose Sabir settings, and the marks on copied files. Multisite Language Switcher's settings and translation links (also those Copy made), the drafts and media Copy made, are kept; Multisite Language Switcher then links the sites of its reference user again.
 
 == Changelog ==
+
+= 0.3.4 =
+* Language item: the current language is plain text, no longer a link to the page itself.
 
 = 0.3.3 =
 * Windrose Common 1.3.0: updates come from the public GitHub repositories, without a token (WordPress 7.2 RC no longer has the Secrets API, where the token was kept).

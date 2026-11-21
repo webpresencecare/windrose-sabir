@@ -1,7 +1,7 @@
 <?php
 /**
  * The language item block: MSLS's links for the current page, names in their own language, lang and
- * hreflang, aria-current, inside and outside a Navigation block.
+ * hreflang, the current language as plain text, inside and outside a Navigation block.
  *
  * @package Windrose\Sabir
  */
@@ -57,13 +57,15 @@ class LanguageItemTest extends Sabir_TestCase {
 		$fr   = get_blog_permalink( self::$fr, $this->fr_post );
 
 		$this->assertStringStartsWith( '<ul class="windrose-language-item wp-block-windrose-language-item">', $html );
-		$this->assertStringContainsString( 'href="' . esc_url( get_permalink( $this->en ) ) . '" hreflang="en" lang="en" aria-current="page"><span translate="no">English</span>', $html );
+		$this->assertStringContainsString( '<li class="windrose-language-item__item is-current"><span class="windrose-language-item__current" lang="en" aria-current="true"><span translate="no">English</span></span></li>', $html, 'The current language is plain text.' );
+		$this->assertStringNotContainsString( 'href="' . esc_url( get_permalink( $this->en ) ) . '"', $html );
 		$this->assertStringContainsString( 'href="' . esc_url( $fr ) . '" hreflang="fr" lang="fr"><span translate="no">Français</span>', $html );
 	}
 
 	public function test_inside_a_navigation_block_each_language_is_an_item(): void {
 		$html = $this->render_for( $this->en, array(), array( 'maxNestingLevel' => 5 ) );
-		$this->assertStringStartsWith( '<li class="wp-block-navigation-item windrose-language-item__item is-current"><a class="wp-block-navigation-item__content"', $html );
+		$this->assertStringStartsWith( '<li class="wp-block-navigation-item windrose-language-item__item is-current"><span class="wp-block-navigation-item__content" lang="en" aria-current="true"><span class="wp-block-navigation-item__label"><span translate="no">English</span></span></span></li>', $html );
+		$this->assertSame( 1, substr_count( $html, '<a ' ), 'Only the other language is a link.' );
 		$this->assertSame( 2, substr_count( $html, '<li class="wp-block-navigation-item' ) );
 		$this->assertStringContainsString( '<span class="wp-block-navigation-item__label">', $html );
 		$this->assertStringNotContainsString( '<ul', $html );

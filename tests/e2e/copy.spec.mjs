@@ -212,23 +212,33 @@ test( 'the French draft: network items, caption and credit, linked both ways', a
 	expect( html ).toContain( 'Canola in May. Photo: Jane Doe' );
 } );
 
-test( 'done when: the language item is correct in the French header', async ( { request } ) => {
+test( 'done when: the language item is correct in the French header', async ( { page, request } ) => {
 	const enUrl = wpAt( EN, 'eval', `echo get_permalink( ${ state.post } );` );
 	const frUrl = wpAt( FR, 'eval', `echo get_permalink( ${ state.draft } );` );
-	const html = await ( await request.get( frUrl ) ).text();
-	const header = html.match( /<header[\s\S]*?<\/header>/ )?.[ 0 ] ?? html;
-	const items = [ ...header.matchAll( /<li class="wp-block-navigation-item windrose-language-item__item[^"]*"><a class="wp-block-navigation-item__content" href="([^"]+)" hreflang="([^"]+)" lang="[^"]+"( aria-current="page")?><span class="wp-block-navigation-item__label"><span translate="no">([^<]+)<\/span>/g ) ].map(
-		( m ) => ( { href: m[ 1 ], hreflang: m[ 2 ], current: !! m[ 3 ], name: m[ 4 ] } )
+	await page.goto( frUrl );
+	// The other languages are links; the current one is plain text.
+	const items = await page.locator( 'header li.wp-block-navigation-item.windrose-language-item__item' ).evaluateAll( ( lis ) =>
+		lis.map( ( li ) => {
+			const item = li.querySelector( '.wp-block-navigation-item__content' );
+			return {
+				tag: item.tagName.toLowerCase(),
+				href: item.getAttribute( 'href' ),
+				hreflang: item.getAttribute( 'hreflang' ),
+				lang: item.getAttribute( 'lang' ),
+				current: item.getAttribute( 'aria-current' ),
+				name: item.querySelector( '[translate="no"]' )?.textContent,
+			};
+		} )
 	);
 	// Ipsum's header holds the menu twice (the navigation and its mobile overlay): the same items each time.
 	const distinct = [ ...new Map( items.map( ( item ) => [ JSON.stringify( item ), item ] ) ).values() ];
 	expect( distinct ).toEqual( [
-		{ href: enUrl, hreflang: 'en', current: false, name: 'English' },
-		{ href: frUrl, hreflang: 'fr', current: true, name: 'Français' },
+		{ tag: 'a', href: enUrl, hreflang: 'en', lang: 'en', current: null, name: 'English' },
+		{ tag: 'span', href: null, hreflang: null, lang: 'fr', current: 'true', name: 'Français' },
 	] );
 	expect( ( await request.get( enUrl ) ).status() ).toBe( 200 );
 	// MSLS's hreflang in the head names both languages.
-	const hreflang = [ ...html.matchAll( /<link rel="alternate" href="[^"]+" hreflang="([^"]+)"/g ) ].map( ( m ) => m[ 1 ] );
+	const hreflang = await page.locator( 'head link[rel="alternate"][hreflang]' ).evaluateAll( ( links ) => links.map( ( link ) => link.getAttribute( 'hreflang' ) ) );
 	expect( hreflang ).toContain( 'en' );
 	expect( hreflang ).toContain( 'fr' );
 } );
