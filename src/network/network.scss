@@ -1,0 +1,91 @@
+// Windrose Sabir network admin screen: Language groups.
+
+// DataViews styles, inlined from the package
+// (DataViews is bundled, not provided by WordPress).
+@use "@wordpress/dataviews/build-style/style";
+
+.windrose-sabir {
+	max-width: 1200px;
+
+	.windrose-sabir__notice {
+		margin: 16px 0;
+	}
+
+	.windrose-sabir__card {
+		margin-bottom: 16px;
+	}
+
+	.windrose-sabir__card-title {
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.5;
+	}
+
+	.windrose-sabir__table {
+		padding: 0;
+	}
+
+	.windrose-sabir__sites {
+		margin: 0;
+		list-style: none;
+
+		// Site links are targets: 24px high, so stacked links stay apart
+		// (WCAG 2.2, 2.5.8).
+		li {
+			margin: 0 0 4px;
+			line-height: 24px;
+		}
+	}
+
+	.windrose-sabir__muted {
+		color: #757575;
+	}
+}
+
+.windrose-sabir-modal {
+
+	.components-modal__content {
+		min-width: min(560px, 90vw);
+	}
+
+	fieldset {
+		margin: 16px 0;
+		padding: 0;
+		border: 0;
+	}
+
+	legend {
+		margin-bottom: 8px;
+		font-weight: 600;
+	}
+
+	.windrose-sabir__site-option {
+		margin-bottom: 12px;
+	}
+
+	.windrose-sabir__buttons {
+		display: flex;
+		justify-content: flex-end;
+		gap: 8px;
+		margin-top: 16px;
+	}
+}
+
+.windrose-sabir-modal .windrose-sabir__links ul {
+	margin: 8px 0 8px 20px;
+	list-style: disc;
+}
+
+.windrose-sabir .components-toggle-control {
+	margin-bottom: 16px;
+}
+
+.windrose-sabir .windrose-sabir__buttons-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.windrose-sabir-modal .windrose-sabir__error {
+	color: #cc1818;
+}

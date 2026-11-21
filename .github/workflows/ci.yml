@@ -1,0 +1,121 @@
+# Checks every push to main and every pull request (Playwright is not run here: it needs a multisite test network):
+# php -l on PHP 8.4 and 8.5, WordPress coding standards, PHPStan level 8 on PHP 8.4, JavaScript
+# and style lint with a fresh build equal to the committed build/, PHPUnit (multisite) on the WordPress nightly with
+# PHP 8.4 and 8.5. A green tick on the commit before tagging a release.
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.4', '8.5' ]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: php -l on every PHP file
+        run: |
+          status=0
+          while IFS= read -r -d '' f; do
+            out=$(php -l "$f" 2>&1) || { echo "$out"; status=1; }
+          done < <(find . -name '*.php' -not -path './vendor/*' -not -path './node_modules/*' -print0)
+          exit $status
+
+  standards:
+    name: Coding standards and PHPStan (PHP 8.4)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.4'
+          coverage: none
+          tools: composer:v2
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      # PHPStan reads Multisite Language Switcher's classes (Copy uses its content import pipeline).
+      - name: Multisite Language Switcher for PHPStan
+        run: bash bin/get-msls.sh .msls
+      - name: PHPCS
+        run: vendor/bin/phpcs --standard=phpcs.xml.dist
+      - name: PHPStan level 8
+        run: vendor/bin/phpstan analyse -c phpstan.neon.dist --no-progress --memory-limit=1G
+
+  # For a plugin without JavaScript (no package.json), delete this job.
+  javascript:
+    name: JavaScript (lint, build up to date)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx wp-scripts lint-js src
+      - run: npx wp-scripts lint-style "src/**/*.scss"
+      - name: A fresh build must equal the committed build/
+        run: |
+          npm run build
+          if ! git diff --exit-code -- build/; then
+            echo "::error::build/ is out of date: run npm run build and commit the result."
+            exit 1
+          fi
+
+  phpunit:
+    name: PHPUnit multisite (PHP ${{ matrix.php }}, WordPress nightly)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.4', '8.5' ]
+    services:
+      mariadb:
+        image: mariadb:11.8
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: windrose_tests
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DB_NAME: windrose_tests
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: 127.0.0.1:3306
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+          extensions: mysqli, zip, intl, sodium
+      - run: composer install --prefer-dist --no-interaction --no-progress
+      - name: WordPress nightly and its test library
+        run: bash bin/install-wp-tests.sh "$RUNNER_TEMP/wp"
+      - name: PHPUnit
+        env:
+          WP_TESTS_DIR: ${{ runner.temp }}/wp/develop/tests/phpunit
+          WP_TESTS_CONFIG_FILE_PATH: ${{ runner.temp }}/wp/wp-tests-config.php
+        run: vendor/bin/phpunit

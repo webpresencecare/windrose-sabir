@@ -1,0 +1,27 @@
+# Publishes a GitHub release when a version tag is pushed (git tag v0.2.0, then push the tag; GitHub Desktop: History,
+# right-click the commit, Create Tag, then Push). The release carries <slug>.zip with a <slug>/ root folder; GitHub
+# publishes its sha256 digest, which Windrose Common's updater checks before installing.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build the zip (checks that the tag matches the plugin version)
+        run: bash bin/build-zip.sh "$GITHUB_REF_NAME"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUG: ${{ github.event.repository.name }}
+        run: gh release create "$GITHUB_REF_NAME" "dist/$SLUG.zip" --title "$SLUG $GITHUB_REF_NAME" --generate-notes --verify-tag

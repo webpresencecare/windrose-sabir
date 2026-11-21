@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "windrose/language-item",
+	"title": "Language item",
+	"category": "theme",
+	"description": "Links to this page in the other languages of the site's language group (Multisite Language Switcher). Works inside a Navigation block.",
+	"keywords": [ "language", "switcher", "translation", "multilingual" ],
+	"textdomain": "windrose-sabir",
+	"attributes": {
+		"display": {
+			"type": "string",
+			"enum": [ "name", "code", "label" ],
+			"default": "name"
+		},
+		"showCurrent": {
+			"type": "boolean",
+			"default": true
+		},
+		"hideMissing": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"usesContext": [ "maxNestingLevel", "showSubmenuIcon" ],
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"editorScript": "windrose-sabir-language-item",
+	"editorStyle": "windrose-sabir-language-item-editor",
+	"style": "windrose-sabir-language-item"
+}

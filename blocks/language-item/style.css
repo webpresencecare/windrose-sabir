@@ -1,0 +1,26 @@
+/* Windrose Sabir, language item (front end and editor). */
+.windrose-language-item__name {
+	border: 0;
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+ul.windrose-language-item {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1em;
+	list-style: none;
+	margin-left: 0;
+	margin-right: 0;
+	padding: 0;
+}
+
+.windrose-language-item__item a[aria-current="page"] {
+	text-decoration: none;
+}

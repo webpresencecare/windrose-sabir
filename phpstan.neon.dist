@@ -1,0 +1,22 @@
+# PHPStan level 8, on PHP 8.4: composer install, then vendor/bin/phpstan analyse -c phpstan.neon.dist
+# Multisite Language Switcher's classes are scanned from .msls (bin/get-msls.sh .msls, or a link to an installed copy).
+# Windrose Anchors is optional: the methods Copy calls are in stubs/windrose-anchors.php.
+parameters:
+    level: 8
+    phpVersion:
+        min: 80400
+        max: 80599
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: true
+    paths:
+        - windrose-sabir.php
+        - uninstall.php
+        - common
+        - includes
+    bootstrapFiles:
+        - stubs/constants.php
+    scanFiles:
+        - stubs/windrose-anchors.php
+        - stubs/wp-cli.php
+    scanDirectories:
+        - .msls/includes

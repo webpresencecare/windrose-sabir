@@ -1,0 +1,27 @@
+# Left out of the release zip (bin/build-zip.sh): one path per line, relative to the plugin folder.
+# build/ (the compiled admin screen) and common/ ship in the zip.
+.git
+.github
+.gitignore
+.gitattributes
+.distignore
+node_modules
+src
+tests
+bin
+stubs
+dist
+phpcs.xml.dist
+phpstan.neon.dist
+phpunit.xml.dist
+composer.json
+composer.lock
+vendor
+package.json
+package-lock.json
+README.md
+CLAUDE.md
+TODO.md
+DONE.md
+.phpunit.result.cache
+.msls
