@@ -11,7 +11,7 @@ export const HOST = process.env.WINDROSE_E2E_HOST ?? 'localhost';
  * DataViews 22 draws its selection checkboxes (`@wordpress/ui` Checkbox) 16px wide with a 24px `::after` click area
  * that axe cannot see, so axe reports them under target-size although people get 24px (checked with real clicks on
  * 2026-11-10). Only those checkboxes are left out of target-size; everything else is still checked. Remove once fixed
- * upstream (Windrose dev notes: gutenberg-contrib/dataviews-checkbox-target-size.md).
+ * upstream.
  *
  * @param {import('@playwright/test').Page} page       The page.
  * @param {Array}                           violations axe violations.
