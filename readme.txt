@@ -1,5 +1,5 @@
 === Windrose Sabir - Languages ===
-Contributors: patriciabt
+Contributors: patricia70
 Tags: multilingual, multisite, language switcher, translation, hreflang
 Requires at least: 7.2
 Tested up to: 7.2
@@ -34,6 +34,12 @@ Each site's settings page of Multisite Language Switcher says which group the si
 
 Windrose Sabir only uses the filters Multisite Language Switcher documents; it never changes that plugin.
 
+Windrose Sabir is part of the Windrose Suite, a free set of plugins and themes for WordPress networks: https://www.webpresencecare.com/windrose/ . Each Windrose plugin and theme works on its own.
+
+Source code, issues and build steps: https://github.com/webpresencecare/windrose-sabir
+
+Security: please report vulnerabilities privately through GitHub: https://github.com/webpresencecare/windrose-sabir/security/advisories/new . Never in a public support thread.
+
 == External services ==
 
 None. The bundled update library contacts the GitHub API (api.github.com) to check for and download updates of Windrose plugins: sent are the repository name and a "Windrose" User-Agent. GitHub terms: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service, privacy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
@@ -45,6 +51,12 @@ Windrose Sabir collects nothing about visitors, sets no cookies and contacts no 
 == Uninstall ==
 
 Uninstalling removes the language groups, the module and display settings, each site's Windrose Sabir settings, and the marks on copied files. Multisite Language Switcher's settings and translation links (also those Copy made), the drafts and media Copy made, are kept; Multisite Language Switcher then links the sites of its reference user again.
+
+== Frequently Asked Questions ==
+
+= Is this plugin written with AI? =
+
+Yes. I write the Windrose plugins and themes with Claude Code, Anthropic's AI coding assistant: I design each feature, test it on real sites and review every release, and every commit written with Claude says so. Independent reviews are welcome on GitHub.
 
 == Changelog ==
 

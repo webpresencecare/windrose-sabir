@@ -20,6 +20,8 @@ vendor
 package.json
 package-lock.json
 README.md
+CONTRIBUTING.md
+SECURITY.md
 CLAUDE.md
 TODO.md
 DONE.md

@@ -1,5 +1,7 @@
 # Windrose Sabir - Languages
 
+> Part of **[the Windrose Suite](https://www.webpresencecare.com/windrose/)**: WordPress for networks of sites, private by default, multilingual if you want it, free for everyone. Each Windrose plugin and theme works on its own.
+
 Multilingual add-on for [Multisite Language Switcher](https://wordpress.org/plugins/multisite-language-switcher/) (MSLS), part of the Windrose Suite. One site per language, as MSLS does; Windrose Sabir adds what a real multilingual network needs on top. Version 0.2.0 adds **Copy**, the **language item** block, the **translation links** clean-up and the **Logbook** export to the language groups of 0.1.0; Translate and the Logbook import follow in a later version.
 
 Requires WordPress 7.2, PHP 8.4 and Multisite Language Switcher (`Requires Plugins`). Network-activated only.
@@ -82,6 +84,22 @@ npx wp-scripts lint-style "src/**/*.scss"
 PHP checks: `composer install`, then `vendor/bin/phpcs --standard=phpcs.xml.dist` and `vendor/bin/phpstan analyse -c phpstan.neon.dist` (PHP 8.4). PHPUnit runs in multisite mode against the WordPress test library (`bin/install-wp-tests.sh <folder>` installs it with a test database and MSLS; `WP_TESTS_DIR` points to it), never on real data, with MSLS next to the test library (`WINDROSE_MSLS_DIR` to use another copy) and Windrose Anchors from its working copy next to this one when present (`WINDROSE_ANCHORS_FILE`; Copy's network media tests are skipped without it, as on GitHub). PHPStan reads MSLS from `.msls` (`bin/get-msls.sh .msls`, or a link to an installed copy) and Anchors from `stubs/windrose-anchors.php`. The Playwright tests (`tests/e2e`) run on a WordPress multisite test network with WP-CLI and MSLS (main site, `/fr/`, `/ar/`, `/social/`), reached at `WINDROSE_E2E_HOST` with the administrator `WINDROSE_E2E_USER` and password `WINDROSE_PASS`; they delete everything they create, and groups that existed before are put back.
 
 On GitHub, `.github/workflows/ci.yml` runs on every push to `main` and every pull request: `php -l` on PHP 8.4 and 8.5, PHPCS, PHPStan (PHP 8.4), JavaScript and style lint with a fresh build equal to the committed `build/`, PHPUnit multisite on PHP 8.4 and 8.5 against the WordPress nightly and MSLS from GitHub (`bin/install-wp-tests.sh`: a tested commit until MSLS 3.1.0 is released, then set `MSLS_REF` to its tag).
+
+## Status
+
+Updates come from this repository's GitHub releases: each download is checked against the sha256 digest GitHub publishes before it is installed. A wordpress.org version may come later, after independent reviews.
+
+## Security
+
+Please report vulnerabilities privately, never in a public issue: see [SECURITY.md](SECURITY.md).
+
+## Contributing
+
+Reviews, tests and issues are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## How this code is written
+
+I write this plugin with Claude Code (Anthropic's AI coding assistant): I design each feature, test it on real sites and review every release. Commits written with Claude say so in a `Co-Authored-By` line. Human review is especially welcome.
 
 ## Licence
 
