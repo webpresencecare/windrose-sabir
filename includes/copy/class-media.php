@@ -28,6 +28,7 @@ declare( strict_types=1 );
 
 namespace Windrose\Sabir\Copy;
 
+use Windrose\Common\Files;
 use Windrose\Sabir\Groups;
 use WP_Error;
 use WP_Post;
@@ -473,7 +474,7 @@ final class Media {
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		$name = wp_basename( $file['path'] );
 		$tmp  = wp_tempnam( $name );
-		if ( '' === $tmp || ! copy( $file['path'], $tmp ) ) {
+		if ( '' === $tmp || ! Files::copy( $file['path'], $tmp, true ) ) {
 			$plan['how']    = 'keep';
 			$plan['reason'] = 'no-file';
 			return $plan;

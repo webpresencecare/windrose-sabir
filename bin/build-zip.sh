@@ -18,6 +18,9 @@ if [ "${1:-}" != "" ] && [ "v$version" != "$1" ]; then
 	exit 1
 fi
 [ -f build/network.js ] || { echo "build/ is missing: run npm run build first." >&2; exit 1; }
+# Every PHP file of build/ stops when opened directly (bin/guard-build.mjs runs after npm run build).
+unguarded=$(grep -rL --include=*.php "defined( 'ABSPATH' )" build 2>/dev/null || true)
+[ -z "$unguarded" ] || { echo "Build files without the direct access guard (run npm run build): $unguarded" >&2; exit 1; }
 
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT

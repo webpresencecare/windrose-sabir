@@ -5,7 +5,7 @@ Requires at least: 7.2
 Tested up to: 7.2
 Requires PHP: 8.4
 Requires Plugins: multisite-language-switcher
-Stable tag: 0.3.4
+Stable tag: 0.3.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,11 @@ Uninstalling removes the language groups, the module and display settings, each 
 Yes. I write the Windrose plugins and themes with Claude Code, Anthropic's AI coding assistant: I design each feature, test it on real sites and review every release, and every commit written with Claude says so. Independent reviews are welcome on GitHub.
 
 == Changelog ==
+
+= 0.3.5 =
+* Windrose Common 1.4.0: Files, for reading, writing and copying uploads and temporary files through WordPress's Filesystem API.
+* Copy: pictures copied to another site, and the Logbook export written by WP-CLI, go through WordPress's Filesystem API.
+* Code: the generated script files (`*.asset.php`) stop when opened directly.
 
 = 0.3.4 =
 * Language item: the current language is plain text, no longer a link to the page itself.

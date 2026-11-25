@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace Windrose\Sabir;
 
 use WP_CLI;
+use Windrose\Common\Files;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -63,8 +64,7 @@ final class Cli {
 	 * @return void
 	 */
 	private static function write( string $path, string $content ): void {
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- WP-CLI writes where the person asked.
-		if ( false === file_put_contents( $path, $content ) ) {
+		if ( ! Files::write( $path, $content ) ) {
 			WP_CLI::error( sprintf( 'Could not write %s.', $path ) );
 		}
 	}

@@ -1,11 +1,12 @@
 {
   "name": "windrose-sabir",
-  "version": "0.3.0",
+  "version": "0.3.5",
   "private": true,
   "description": "Windrose Sabir: network admin screens, the Languages panel (Copy) and the language item block.",
   "license": "GPL-2.0-or-later",
   "scripts": {
     "build": "wp-scripts build network=./src/network/index.js editor=./src/editor/index.js language-item=./src/language-item/index.js --output-path=build",
+    "postbuild": "node bin/guard-build.mjs",
     "start": "wp-scripts start network=./src/network/index.js editor=./src/editor/index.js language-item=./src/language-item/index.js --output-path=build",
     "lint:js": "wp-scripts lint-js src"
   },

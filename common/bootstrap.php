@@ -46,7 +46,7 @@ if ( ! isset( $GLOBALS['windrose_common_copies'] ) || ! is_array( $GLOBALS['wind
 	$GLOBALS['windrose_common_copies'] = array();
 }
 // This copy's version: the only line that differs between copies.
-$GLOBALS['windrose_common_copies'][ __DIR__ ] = '1.3.0';
+$GLOBALS['windrose_common_copies'][ __DIR__ ] = '1.4.0';
 
 // A plugin included after plugins_loaded (for example during its own activation) still gets the library.
 if ( did_action( 'plugins_loaded' ) ) {
