@@ -141,6 +141,26 @@ class SettingsTest extends Sabir_TestCase {
 		$this->assertSame( 400, $this->request( 'POST', '/settings', array( 'modules' => array( 'unknown' => true ) ) )->get_status() );
 	}
 
+	public function test_the_links_tab_names_posts_also_in_the_trash(): void {
+		$this->group( 'Windrose', array( self::$main, self::$fr ) );
+		switch_to_blog( self::$main );
+		$live  = self::factory()->post->create( array( 'post_title' => 'Harbour' ) );
+		$trash = self::factory()->post->create( array( 'post_title' => 'Old harbour' ) );
+		wp_trash_post( $trash );
+		restore_current_blog();
+		update_blog_option( self::$main, 'msls_' . $live, array( 'fr_FR' => 999999 ) );
+		update_blog_option( self::$main, 'msls_' . $trash, array( 'fr_FR' => 999998 ) );
+
+		$this->super_admin();
+		$items  = $this->request( 'GET', '/links' )->get_data()['items'];
+		$titles = array_column( $items, 'title', 'id' );
+		$edits  = array_column( $items, 'edit', 'id' );
+		$this->assertSame( 'Harbour', $titles[ $live ] ?? null );
+		$this->assertSame( 'Old harbour', $titles[ $trash ] ?? null );
+		$this->assertNotSame( '', $edits[ $live ] ?? '' );
+		$this->assertSame( '', $edits[ $trash ] ?? null, 'No edit link for a post in the trash.' );
+	}
+
 	public function test_links_routes(): void {
 		$this->group( 'Windrose', array( self::$main, self::$fr ) );
 		update_blog_option( self::$main, 'msls_77', array( 'fr_FR' => 999999 ) );

@@ -5,7 +5,7 @@
  * @package Windrose\Sabir
  */
 
-define( 'WINDROSE_SABIR_VERSION', '0.3.5' );
+define( 'WINDROSE_SABIR_VERSION', '0.3.6' );
 define( 'WINDROSE_SABIR_FILE', __DIR__ . '/../windrose-sabir.php' );
 define( 'WINDROSE_SABIR_DIR', dirname( __DIR__ ) );
 define( 'WINDROSE_COMMON_VERSION', '1.4.0' );

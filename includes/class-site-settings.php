@@ -95,7 +95,7 @@ final class Site_Settings {
 	 *
 	 * WordPress saves every option of MSLS's settings group, also when the form did not show Windrose Sabir's fields:
 	 * the value is then missing, and the stored settings are kept. The form sends `form` = 1, so no box ticked means
-	 * no content type. WordPress may run this twice on the first save (update_option(), then add_option()): a value
+	 * no content type. WordPress may run this twice on the first save (it updates the option, then adds it): a value
 	 * cleaned once comes out the same.
 	 *
 	 * @param mixed $value Submitted value.

@@ -5,11 +5,11 @@ Requires at least: 7.2
 Tested up to: 7.2
 Requires PHP: 8.4
 Requires Plugins: multisite-language-switcher
-Stable tag: 0.3.5
+Stable tag: 0.3.6
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Multilingual add-on for Multisite Language Switcher: language groups, Copy to other languages, a language item for the Navigation block, Logbook export.
+Multilingual add-on for Multisite Language Switcher: language groups, Copy to other languages, a Navigation block language item, Logbook export.
 
 == Description ==
 
@@ -59,6 +59,10 @@ Uninstalling removes the language groups, the module and display settings, each 
 Yes. I write the Windrose plugins and themes with Claude Code, Anthropic's AI coding assistant: I design each feature, test it on real sites and review every release, and every commit written with Claude says so. Independent reviews are welcome on GitHub.
 
 == Changelog ==
+
+= 0.3.6 =
+* Links tab: posts are named also when they are in the trash (as plain text, not a link) or of a type registered only on their site (before: "no title"); posts and terms are read with one query per site.
+* Code: a redundant query argument removed (WordPress's default); shorter readme description.
 
 = 0.3.5 =
 * Windrose Common 1.4.0: Files, for reading, writing and copying uploads and temporary files through WordPress's Filesystem API.

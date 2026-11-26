@@ -484,26 +484,23 @@ final class Rest {
 		foreach ( $wanted as $site => $kinds ) {
 			switch_to_blog( $site );
 			try {
-				$post_ids = array_values( array_unique( $kinds[ Links::POST ] ?? array() ) );
-				if ( array() !== $post_ids ) {
-					foreach ( get_posts(
-						array(
-							'post__in'         => $post_ids,
-							'post_type'        => 'any',
-							'post_status'      => 'any',
-							'numberposts'      => -1,
-							'suppress_filters' => true,
-						)
-					) as $post ) {
-						if ( $post instanceof WP_Post ) {
-							$names[ $site ][ Links::POST ][ $post->ID ] = array(
-								'title' => $post->post_title,
-								'edit'  => (string) get_edit_post_link( $post->ID, 'raw' ),
-							);
-						}
+				// Any post or term of that site, whatever its type, taxonomy or status (trash included): types and
+				// taxonomies registered only on that site are unknown here, so no query by type. One query each.
+				$post_ids = array_map( 'intval', array_values( array_unique( $kinds[ Links::POST ] ?? array() ) ) );
+				_prime_post_caches( $post_ids, false, false );
+				foreach ( $post_ids as $post_id ) {
+					$post = get_post( $post_id );
+					if ( $post instanceof WP_Post ) {
+						$names[ $site ][ Links::POST ][ $post->ID ] = array(
+							'title' => $post->post_title,
+							// A post in the trash cannot be edited: its title stays plain text.
+							'edit'  => 'trash' === $post->post_status ? '' : (string) get_edit_post_link( $post->ID, 'raw' ),
+						);
 					}
 				}
-				foreach ( array_values( array_unique( $kinds[ Links::TERM ] ?? array() ) ) as $term_id ) {
+				$term_ids = array_map( 'intval', array_values( array_unique( $kinds[ Links::TERM ] ?? array() ) ) );
+				_prime_term_caches( $term_ids, false );
+				foreach ( $term_ids as $term_id ) {
 					$term = get_term( $term_id );
 					if ( $term instanceof WP_Term ) {
 						$names[ $site ][ Links::TERM ][ $term_id ] = array(

@@ -314,15 +314,14 @@ final class Media {
 	private static function earlier_copy( int $owner_site, int $owner_id ): int {
 		$ids = get_posts(
 			array(
-				'post_type'        => 'attachment',
-				'post_status'      => 'inherit',
-				'fields'           => 'ids',
-				'numberposts'      => 1,
-				'orderby'          => 'ID',
-				'order'            => 'ASC',
-				'meta_key'         => self::SOURCE_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Only while copying a post.
-				'meta_value'       => $owner_site . ':' . $owner_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Same.
-				'suppress_filters' => true,
+				'post_type'   => 'attachment',
+				'post_status' => 'inherit',
+				'fields'      => 'ids',
+				'numberposts' => 1,
+				'orderby'     => 'ID',
+				'order'       => 'ASC',
+				'meta_key'    => self::SOURCE_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Only while copying a post.
+				'meta_value'  => $owner_site . ':' . $owner_id, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Same.
 			)
 		);
 		return array() === $ids ? 0 : (int) $ids[0];

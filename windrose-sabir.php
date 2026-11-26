@@ -3,7 +3,7 @@
  * Plugin Name:       Windrose Sabir - Languages
  * Plugin URI:        https://www.webpresencecare.com/plugins
  * Description:       Multilingual add-on for Multisite Language Switcher: language groups choose which sites of the network are translations of each other; Copy creates linked drafts in other languages; a language item for the Navigation block; Logbook export.
- * Version:           0.3.5
+ * Version:           0.3.6
  * Requires at least: 7.2
  * Requires PHP:      8.4
  * Requires Plugins:  multisite-language-switcher
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WINDROSE_SABIR_VERSION', '0.3.5' );
+define( 'WINDROSE_SABIR_VERSION', '0.3.6' );
 define( 'WINDROSE_SABIR_FILE', __FILE__ );
 define( 'WINDROSE_SABIR_DIR', __DIR__ );
 
